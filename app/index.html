@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Elvish Translator (Placeholder)</title>
+    <style>
+      :root {
+        --bg: #eef7ef;
+        --ink: #1f2b24;
+        --accent: #2d6a4f;
+        --accent-2: #1b4332;
+        --panel: #f7fbf7;
+        --gold: #cdbf8c;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+        background:
+          radial-gradient(800px 400px at 10% 0%, #f2fff4 0%, transparent 60%),
+          radial-gradient(800px 400px at 90% 10%, #e3f4e9 0%, transparent 60%),
+          linear-gradient(180deg, #f7fff9 0%, var(--bg) 60%, #e6f1e8 100%);
+        color: var(--ink);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+      }
+      .card {
+        width: min(900px, 92vw);
+        background:
+          linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7)),
+          var(--panel);
+        border: 1px solid #dceadf;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 12px 36px rgba(18, 58, 36, 0.12);
+        position: relative;
+        overflow: hidden;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -40% -20% auto auto;
+        height: 300px;
+        width: 300px;
+        background: radial-gradient(circle, rgba(45,106,79,0.12), transparent 70%);
+        pointer-events: none;
+      }
+      h1 {
+        margin: 0 0 10px 0;
+        font-size: 28px;
+        letter-spacing: 0.5px;
+      }
+      p {
+        margin: 0 0 18px 0;
+        line-height: 1.5;
+      }
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .hero {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .hero-art {
+        width: 180px;
+        height: auto;
+        filter: drop-shadow(0 8px 12px rgba(18, 58, 36, 0.2));
+      }
+      .hero-text h1 {
+        margin: 0 0 6px 0;
+      }
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px;
+        border: 1px solid #cfe3d3;
+        border-radius: 8px;
+        font-size: 16px;
+        background: #ffffff;
+      }
+      .row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      .controls {
+        margin-top: 12px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      button {
+        border: 0;
+        background: var(--accent);
+        color: #fff;
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      button.secondary {
+        background: #6b7d73;
+      }
+      select {
+        border: 1px solid #cfe3d3;
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 14px;
+        background: #ffffff;
+        color: var(--ink);
+      }
+      .badge {
+        display: inline-block;
+        padding: 2px 8px;
+        border: 1px solid var(--gold);
+        color: var(--accent-2);
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+      .note {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #4d5d54;
+      }
+      @media (max-width: 700px) {
+        .row { grid-template-columns: 1fr; }
+        .hero { grid-template-columns: 1fr; text-align: center; }
+        .hero-art { margin: 0 auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <div class="hero">
+        <img class="hero-art" src="https://upload.wikimedia.org/wikipedia/commons/a/ad/DrawingAgilityElf.svg" alt="Elf line art" />
+        <div class="hero-text">
+          <span class="badge">Eldarin</span>
+          <h1>English to Elvish (Placeholder)</h1>
+          <p>Type English on the left. The right side shows a lightweight, offline placeholder translation inspired by Tolkien's languages.</p>
+        </div>
+      </div>
+      <div class="controls" style="margin-top: 0;">
+        <label for="mode" style="margin: 0;">Language</label>
+        <select id="mode" aria-label="Select language">
+          <option value="sindarin" selected>Sindarin</option>
+          <option value="quenya">Quenya</option>
+        </select>
+      </div>
+      <div class="row" style="margin-top: 12px;">
+        <div>
+          <label for="input">English</label>
+          <textarea id="input" placeholder="Type here..."></textarea>
+        </div>
+        <div>
+          <label for="output">Elvish (Placeholder)</label>
+          <textarea id="output" readonly></textarea>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="translate">Translate</button>
+        <button id="clear" class="secondary">Clear</button>
+      </div>
+      <div class="note">Note: This is a simplified offline mapping for testing UI and logic. It is not a scholarly or complete Sindarin or Quenya translator.</div>
+      <div class="note">Artwork: "DrawingAgilityElf.svg" by Doublecompile (CC BY-SA 3.0), via Wikimedia Commons.</div>
+    </main>
+
+    <script>
+      const input = document.getElementById("input");
+      const output = document.getElementById("output");
+      const translateBtn = document.getElementById("translate");
+      const clearBtn = document.getElementById("clear");
+      const modeSelect = document.getElementById("mode");
+
+      const sindarin = {
+        "hello": "aiya",
+        "hi": "aiya",
+        "friend": "mellon",
+        "friends": "mellyn",
+        "world": "amar",
+        "and": "ar",
+        "the": "i",
+        "of": "en",
+        "to": "na",
+        "king": "aran",
+        "queen": "tari",
+        "star": "elen",
+        "stars": "eleni",
+        "light": "cal",
+        "dark": "morn",
+        "home": "mar",
+        "road": "men",
+        "forest": "taur",
+        "water": "nen",
+        "stone": "sarn",
+        "fire": "nar",
+        "heart": "hor",
+        "love": "mel",
+        "peace": "sedh",
+        "good": "vian",
+        "night": "duil",
+        "day": "aur",
+        "sun": "anar",
+        "moon": "isil",
+        "ring": "corm",
+        "mountain": "orod",
+        "door": "annon",
+        "speak": "ped",
+        "say": "ped",
+        "i": "ni",
+        "you": "le",
+        "we": "men",
+        "is": "na",
+        "are": "nar"
+      };
+
+      const quenya = {
+        "hello": "aiya",
+        "hi": "aiya",
+        "friend": "meldis",
+        "friends": "meldi",
+        "world": "ambar",
+        "and": "ar",
+        "the": "i",
+        "of": "en",
+        "to": "na",
+        "king": "aran",
+        "queen": "tari",
+        "star": "elen",
+        "stars": "eleni",
+        "light": "cal",
+        "dark": "morn",
+        "home": "mar",
+        "road": "men",
+        "forest": "taur",
+        "water": "nen",
+        "stone": "sarn",
+        "fire": "nar",
+        "heart": "hore",
+        "love": "melme",
+        "peace": "sere",
+        "good": "vanwa",
+        "night": "lome",
+        "day": "aur",
+        "sun": "anar",
+        "moon": "isil",
+        "ring": "corma",
+        "mountain": "orot",
+        "door": "ando",
+        "speak": "quet",
+        "say": "quet",
+        "i": "ni",
+        "you": "le",
+        "we": "men",
+        "is": "na",
+        "are": "nar"
+      };
+
+      function currentDictionary() {
+        return modeSelect.value === "quenya" ? quenya : sindarin;
+      }
+
+      function translateWord(word) {
+        const lower = word.toLowerCase();
+        const stripped = lower.replace(/[^a-z']/g, "");
+        const translated = currentDictionary()[stripped];
+        if (!translated) return word;
+        if (word[0] && word[0] === word[0].toUpperCase()) {
+          return translated.charAt(0).toUpperCase() + translated.slice(1);
+        }
+        return translated;
+      }
+
+      function translateText(text) {
+        return text
+          .split(/(\s+)/)
+          .map(token => (token.trim() ? translateWord(token) : token))
+          .join("");
+      }
+
+      function runTranslate() {
+        output.value = translateText(input.value);
+      }
+
+      translateBtn.addEventListener("click", runTranslate);
+      clearBtn.addEventListener("click", () => {
+        input.value = "";
+        output.value = "";
+        input.focus();
+      });
+
+      input.addEventListener("input", runTranslate);
+      modeSelect.addEventListener("change", runTranslate);
+    </script>
+  </body>
+</html>
